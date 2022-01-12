@@ -14,7 +14,9 @@ class CandidatosController extends Controller
      */
     public function index()
     {
-        //
+        $candidatos = Candidato::latest()->paginate(10);
+
+        return view('candidatos.index', compact('candidatos'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -24,7 +26,7 @@ class CandidatosController extends Controller
      */
     public function create()
     {
-        //
+        return view('candidatos.create');
     }
 
     /**
@@ -35,7 +37,9 @@ class CandidatosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Candidato::create($request->all());
+
+        return redirect()->route('candidatos.index')->with('success', 'Candidato almacenado con exito.');
     }
 
     /**
@@ -46,7 +50,7 @@ class CandidatosController extends Controller
      */
     public function show(Candidato $candidato)
     {
-        //
+        return view('candidatos.show', compact('candidato'));
     }
 
     /**
@@ -57,7 +61,7 @@ class CandidatosController extends Controller
      */
     public function edit(Candidato $candidato)
     {
-        //
+        return view('candidatos.edit', compact('candidato'));
     }
 
     /**
@@ -69,7 +73,9 @@ class CandidatosController extends Controller
      */
     public function update(Request $request, Candidato $candidato)
     {
-        //
+        $candidato->update($request->all());
+
+        return redirect()->route('candidatos.index')->with('success', 'Candidato actualizado.');
     }
 
     /**
