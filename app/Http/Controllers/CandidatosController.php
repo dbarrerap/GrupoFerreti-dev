@@ -37,7 +37,12 @@ class CandidatosController extends Controller
      */
     public function store(Request $request)
     {
-        Candidato::create($request->all());
+        $validated = $request->validate([
+            'cedula' => 'required|numeric|unique:candidatos|digits_between:10,13',
+            'numero_movil' => 'required|numeric',
+            'email' => 'required|email:rfc'
+        ]);
+        Candidato::create($validated);
 
         return redirect()->route('candidatos.index')->with('success', 'Candidato almacenado con exito.');
     }
@@ -73,7 +78,12 @@ class CandidatosController extends Controller
      */
     public function update(Request $request, Candidato $candidato)
     {
-        $candidato->update($request->all());
+        $validated = $request->validate([
+            'cedula' => 'required|numeric|unique:candidatos|digits_between:10,13',
+            'numero_movil' => 'required|numeric',
+            'email' => 'required|email:rfc'
+        ]);
+        $candidato->update($validated);
 
         return redirect()->route('candidatos.index')->with('success', 'Candidato actualizado.');
     }
